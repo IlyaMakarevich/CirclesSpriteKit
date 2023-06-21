@@ -8,50 +8,26 @@
 
 import SpriteKit
 
-@objcMembers open class Node: SKShapeNode {
+class Node: SKShapeNode {
 
     private var childrenCirclesCount: Int {
         return children.filter { $0 is ChildNode}.count
     }
 
-    var currentPosition = 0 {
-        didSet {
-            if currentPosition > 3 {
-                currentPosition = 0
-            }
-        }
+
+    func animateAlpha(to alpha: CGFloat) {
+        let fade = SKAction.fadeAlpha(to: alpha, duration: 0.4)
+        run(fade)
     }
 
-    let positionsArray = [(-100.0, 0.0),(0.0, 100.0),(100.0, 0.0), (0.0, -100.0)]
-
-    override open func addChild(_ node: SKNode) {
+    override func addChild(_ node: SKNode) {
 
         if let node = node as? ChildNode {
             node.animateAppearing()
-
-//            var x = 0.0
-//            if children.count % 2 == 0 {
-//                x += 100.0
-//            } else {
-//                x -= 100.0
-//            }
-//            let y = CGFloat.random(0.0, 100.0)
-
-            if childrenCirclesCount == 0 {
-                node.position = .zero
-                node.physicsBody?.isDynamic = false
-            } else {
-                let x = positionsArray[currentPosition].0
-                let y =  positionsArray[currentPosition].1
-                node.position = CGPoint(x: x, y: y)
-                currentPosition += 1
-            }
-
+            node.position = .zero
             super.addChild(node)
-
             recalculateSize()
-            createMagnticField()
-
+            updateMagneticField()
         } else {
             super.addChild(node)
         }
@@ -71,12 +47,8 @@ import SpriteKit
 
     }
 
-    public func animateAlpha(to alpha: CGFloat) {
-        let fade = SKAction.fadeAlpha(to: alpha, duration: 0.4)
-        run(fade)
-    }
 
-    public lazy var label: SKMultilineLabelNode = { [unowned self] in
+    lazy var label: SKMultilineLabelNode = { [unowned self] in
         let label = SKMultilineLabelNode()
         label.fontName = Defaults.fontName
         label.fontSize = Defaults.fontSize
@@ -89,30 +61,28 @@ import SpriteKit
     }()
 
 
-    open var text: String? {
+    var text: String? {
         get { return label.text }
         set {
             label.text = newValue
         }
     }
 
-    open var image: UIImage? {
+    var image: UIImage? {
         didSet {
-//            let url = URL(string: "https://picsum.photos/1200/600")!
-//            let image = UIImage(data: try! Data(contentsOf: url))
             texture = image.map { SKTexture(image: $0.aspectFill(self.frame.size)) }
         }
     }
 
-    open var color: UIColor = Defaults.color {
+    var color: UIColor = Defaults.color {
         didSet {
             self.fillColor = color
         }
     }
 
-    open var texture: SKTexture?
+    var texture: SKTexture?
 
-    open var isSelected: Bool = false {
+    var isSelected: Bool = false {
         didSet {
             guard isSelected != oldValue else { return }
             if isSelected {
@@ -123,17 +93,17 @@ import SpriteKit
         }
     }
 
-    open var selectedScale: CGFloat = 4 / 3
-    open var deselectedScale: CGFloat = 1
+    var selectedScale: CGFloat = 4 / 3
+    var deselectedScale: CGFloat = 1
     private var originalColor: UIColor = Defaults.color
-    open var selectedColor: UIColor?
-    open var selectedFontColor: UIColor?
+    var selectedColor: UIColor?
+    var selectedFontColor: UIColor?
     private var originalFontColor: UIColor = Defaults.fontColor
-    open var animationDuration: TimeInterval = 0.2
-    open var marginScale: CGFloat = Defaults.marginScale
-    open private(set) var radius: CGFloat?
+    var animationDuration: TimeInterval = 0.2
+    var marginScale: CGFloat = Defaults.marginScale
+    private(set) var radius: CGFloat?
 
-    public init(text: String? = nil,
+    init(text: String? = nil,
                 image: UIImage? = nil,
                 color: UIColor,
                 path: CGPath,
@@ -146,10 +116,10 @@ import SpriteKit
         self.radius = radius
         regeneratePhysicsBody(withPath: path)
         configure(text: text, image: image, color: color)
-        createMagnticField()
+        updateMagneticField()
     }
 
-    public convenience init(text: String? = nil,
+    convenience init(text: String? = nil,
                             image: UIImage? = nil,
                             color: UIColor,
                             radius: CGFloat,
@@ -162,35 +132,34 @@ import SpriteKit
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(text: String?, image: UIImage?, color: UIColor) {
+    private func configure(text: String?, image: UIImage?, color: UIColor) {
         self.text = text
         self.image = image
         self.color = color
     }
 
-    private func createMagnticField() {
+    private func updateMagneticField() {
         guard self.radius ?? 0.0 > 0 else {
             assertionFailure("unknown radius")
             return
         }
         let floatRadius = Float(self.radius ?? .zero)
-        magneticField.region = SKRegion(radius: floatRadius)
-//        magneticField.minimumRadius = 0.1
-//        magneticField.strength = 0.5
-//        magneticField.position = .zero
-//        magneticField.zPosition = 10
+        magneticField.region = SKRegion(radius: floatRadius + 10)
     }
 
-    open lazy var magneticField: SKFieldNode = { [unowned self] in
-        let field = SKFieldNode.springField()
+    private lazy var magneticField: SKFieldNode = { [unowned self] in
+        let field = SKFieldNode.radialGravityField()
         field.categoryBitMask = CollisionTypes.smallField.rawValue
         field.zPosition = 20
-
+        field.minimumRadius = 0.1
+        field.strength = 20
+        field.position = .zero
+        field.isExclusive = true
         self.addChild(field)
         return field
     }()
 
-    override open func removeFromParent() {
+    override func removeFromParent() {
         removedAnimation() {
             super.removeFromParent()
         }
@@ -221,7 +190,7 @@ import SpriteKit
     /**
      The animation to execute when the node is selected.
      */
-    open func selectedAnimation() {
+    func selectedAnimation() {
         self.originalColor = fillColor
 
         let scaleAction = SKAction.scale(to: selectedScale, duration: animationDuration)
@@ -247,7 +216,7 @@ import SpriteKit
     /**
      The animation to execute when the node is deselected.
      */
-    open func deselectedAnimation() {
+    func deselectedAnimation() {
         let scaleAction = SKAction.scale(to: deselectedScale, duration: animationDuration)
 
         if let selectedColor = selectedColor {
@@ -273,7 +242,7 @@ import SpriteKit
 
      - parameter completion: The block to execute when the animation is complete. You must call this handler and should do so as soon as possible.
      */
-    open func removedAnimation(completion: @escaping () -> Void) {
+    func removedAnimation(completion: @escaping () -> Void) {
         run(.group([.fadeOut(withDuration: animationDuration), .scale(to: 0, duration: animationDuration)]), completion: completion)
     }
 

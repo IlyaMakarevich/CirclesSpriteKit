@@ -9,12 +9,11 @@ import Foundation
 import SpriteKit
 
 
-
-@objcMembers open class ChildNode: SKShapeNode {
+ class ChildNode: SKShapeNode {
     private var marginScale: CGFloat = 1.15
     private var habitPreset: HabitPreset = .read
 
-    public lazy var label: SKMultilineLabelNode = { [unowned self] in
+    lazy var label: SKMultilineLabelNode = { [unowned self] in
         let label = SKMultilineLabelNode()
         label.fontName = Defaults.fontName
         label.fontSize = Defaults.fontSize
@@ -25,12 +24,12 @@ import SpriteKit
         return label
     }()
 
-    public init(radius: CGFloat, preset: HabitPreset) {
+    init(radius: CGFloat, preset: HabitPreset) {
         let path = SKShapeNode(circleOfRadius: radius).path!
         super.init()
         self.zPosition = 4
         self.path = path
-        self.alpha = 0.0
+        self.alpha = 1.0
         self.fillColor = UIColor.colors.randomItem()
         regeneratePhysicsBody(withPath: path)
         addIcon(preset: preset)
@@ -41,7 +40,14 @@ import SpriteKit
         fatalError("init(coder:) has not been implemented")
     }
 
-    public func regeneratePhysicsBody(withPath path: CGPath) {
+    func animateAppearing() {
+        let delay = SKAction.wait(forDuration: 0.0)
+        let fade = SKAction.fadeAlpha(to: 1.0, duration: 0.6)
+        let sequence = SKAction.sequence([delay, fade])
+        run(sequence)
+    }
+
+    private func regeneratePhysicsBody(withPath path: CGPath) {
         self.physicsBody = {
             var transform = CGAffineTransform.identity.scaledBy(x: marginScale, y: marginScale)
             let body = SKPhysicsBody(polygonFrom: path.copy(using: &transform)!)
@@ -54,6 +60,8 @@ import SpriteKit
             return body
         }()
     }
+
+
 
     private func addIcon(preset: HabitPreset) {
         let iconSprite = SKSpriteNode(imageNamed: preset.icon)
@@ -70,10 +78,4 @@ import SpriteKit
     }
 
 
-    public func animateAppearing() {
-        let delay = SKAction.wait(forDuration: 2.0)
-        let fade = SKAction.fadeAlpha(to: 1.0, duration: 1.0)
-        let sequence = SKAction.sequence([delay, fade])
-        run(sequence)
-    }
 }

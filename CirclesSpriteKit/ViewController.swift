@@ -21,8 +21,8 @@ class ViewController: UIViewController {
             magneticView.showsFPS = true
             magneticView.showsDrawCount = true
             magneticView.showsQuadCount = true
-            magneticView.showsPhysics = false
-            magneticView.showsFields = false
+            magneticView.showsPhysics = true
+            magneticView.showsFields = true
             #endif
         }
     }
@@ -69,14 +69,10 @@ class ViewController: UIViewController {
             let node = Node(text: aim.name.capitalized, color: color, radius: 80)
             node.name = aim.name
             magnetic.addChild(node)
-
-            debugPrint("TEST aim.dayRange.lowerBound = \(aim.dayRange.lowerBound)")
-            debugPrint("TEST sliderDay = \(sliderDay)")
             let alphaDistance: Float = 10.0
             let aim = aim
             let alpha = CGFloat(min(1.0, abs(aim.dayRange.lowerBound - sliderDay) / alphaDistance))
             let roundedAlpha = round(alpha * 10) / 10.0
-            debugPrint("TEST roundedAlpha = \(roundedAlpha)")
             magnetic.updateAlpha(nodeName: aim.name, alpha: roundedAlpha)
         }
 
@@ -93,7 +89,6 @@ class ViewController: UIViewController {
         let color = UIColor.colors.randomItem()
         let node = Node(text: name.capitalized, color: color, radius: 80)
         node.selectedColor = UIColor.colors.randomItem()
-
         magnetic.addChild(node)
     }
 
@@ -102,7 +97,8 @@ class ViewController: UIViewController {
     }
 
     @IBAction func addSubChild(_ sender: Any) {
-        magneticView.magnetic.addSubChild()
+        let childNode = ChildNode(radius: 40, preset: HabitPreset.allCases.randomItem())
+        magneticView.magnetic.add(childNode: childNode, to: "Future Aim")
     }
 
     @IBAction func reset(_ sender: UIControl?) {

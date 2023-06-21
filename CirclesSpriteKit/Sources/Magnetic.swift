@@ -28,10 +28,10 @@ enum CollisionTypes: UInt32 {
     case smallField = 16
 }
 
-@objc public protocol MagneticDelegate: AnyObject {
+protocol MagneticDelegate: AnyObject {
     func magnetic(_ magnetic: Magnetic, didSelect node: Node)
     func magnetic(_ magnetic: Magnetic, didDeselect node: Node)
-    @objc optional func magnetic(_ magnetic: Magnetic, didRemove node: Node)
+    func magnetic(_ magnetic: Magnetic, didRemove node: Node)
 }
 
 @objcMembers open class Magnetic: SKScene {
@@ -98,7 +98,7 @@ enum CollisionTypes: UInt32 {
     /**
      The selected children.
      */
-    open var selectedChildren: [Node] {
+    var selectedChildren: [Node] {
         return children.compactMap { $0 as? Node }.filter { $0.isSelected }
     }
 
@@ -111,7 +111,7 @@ enum CollisionTypes: UInt32 {
 
      The delegate must adopt the MagneticDelegate protocol. The delegate is not retained.
      */
-    open weak var magneticDelegate: MagneticDelegate?
+    weak var magneticDelegate: MagneticDelegate?
 
     private var touchStarted: TimeInterval?
 
@@ -155,6 +155,7 @@ enum CollisionTypes: UInt32 {
         magneticField.minimumRadius = radius
         magneticField.strength = strength
         magneticField.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        magneticField.isExclusive = true
     }
 
     override open func addChild(_ node: SKNode) {
@@ -220,7 +221,7 @@ extension Magnetic {
 
             if (timeDiff >= longPressDuration) {
                 node.removedAnimation {
-                    self.magneticDelegate?.magnetic?(self, didRemove: node)
+                    self.magneticDelegate?.magnetic(self, didRemove: node)
                 }
                 return
             }
@@ -278,12 +279,13 @@ extension Magnetic {
         lastNote?.removeFromParent()
     }
 
-    func addSubChild() {
-        let presetsArray = HabitPreset.allCases
-        let subChild = ChildNode(radius: 40, preset: presetsArray.randomItem())
-        if let lastNode = sortedNodes().last {
-            lastNode.addChild(subChild)
+    func add(childNode: ChildNode, to nodeName: String) {
+        let parentNode = children.first { $0.name == nodeName}
+        if let parentNode {
+            childNode.position = parentNode.position
+            super.addChild(childNode)
         }
+
     }
 
 }
