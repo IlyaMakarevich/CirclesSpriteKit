@@ -66,7 +66,7 @@ class ViewController: UIViewController {
         // Добаляем цели и/или обновляем альфу
         aimsInRange.forEach { aim in
             let color = UIColor.colors.randomItem()
-            let node = Node(text: aim.name.capitalized, color: color, radius: 50)
+            let node = Node(text: aim.name.capitalized, color: color, radius: 80)
             node.name = aim.name
             magnetic.addChild(node)
 
@@ -91,7 +91,7 @@ class ViewController: UIViewController {
     @IBAction func add(_ sender: UIControl?) {
         let name = UIImage.names.randomItem()
         let color = UIColor.colors.randomItem()
-        let node = Node(text: name.capitalized, color: color, radius: 50)
+        let node = Node(text: name.capitalized, color: color, radius: 80)
         node.selectedColor = UIColor.colors.randomItem()
 
         magnetic.addChild(node)
