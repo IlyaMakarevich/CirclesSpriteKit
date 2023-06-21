@@ -20,6 +20,11 @@ class Node: SKShapeNode {
         run(fade)
     }
 
+    func animateScale(by value: CGFloat) {
+        let scaleAction = SKAction.scale(to: value, duration: 0.5)
+        run(scaleAction)
+    }
+
     override func addChild(_ node: SKNode) {
 
         if let node = node as? ChildNode {
@@ -103,12 +108,12 @@ class Node: SKShapeNode {
     var marginScale: CGFloat = Defaults.marginScale
     private(set) var radius: CGFloat?
 
-    init(text: String? = nil,
-                image: UIImage? = nil,
-                color: UIColor,
-                path: CGPath,
-                marginScale: CGFloat = 1.1,
-                radius: CGFloat) {
+    init(text:  String? = nil,
+         image: UIImage? = nil,
+         color: UIColor,
+         path: CGPath,
+         marginScale: CGFloat = 1.1,
+         radius: CGFloat) {
         super.init()
         self.alpha = 0.0
         self.path = path
@@ -117,13 +122,16 @@ class Node: SKShapeNode {
         regeneratePhysicsBody(withPath: path)
         configure(text: text, image: image, color: color)
         updateMagneticField()
+
+        #warning("начальный скейл")
+        self.setScale(0.5)
     }
 
     convenience init(text: String? = nil,
-                            image: UIImage? = nil,
-                            color: UIColor,
-                            radius: CGFloat,
-                            marginScale: CGFloat = 1.1) {
+                     image: UIImage? = nil,
+                     color: UIColor,
+                     radius: CGFloat,
+                     marginScale: CGFloat = 1.1) {
         let path = SKShapeNode(circleOfRadius: radius).path!
         self.init(text: text, image: image, color: color, path: path, marginScale: marginScale, radius: radius)
     }
@@ -200,16 +208,16 @@ class Node: SKShapeNode {
         }
 
         if let selectedColor = selectedColor {
-          run(.group([
-            scaleAction,
-            .colorTransition(from: originalColor, to: selectedColor, duration: animationDuration),
-          ]))
+            run(.group([
+                scaleAction,
+                .colorTransition(from: originalColor, to: selectedColor, duration: animationDuration),
+            ]))
         } else {
-          run(scaleAction)
+            run(scaleAction)
         }
 
         if let texture = texture {
-          fillTexture = texture
+            fillTexture = texture
         }
     }
 
@@ -220,21 +228,21 @@ class Node: SKShapeNode {
         let scaleAction = SKAction.scale(to: deselectedScale, duration: animationDuration)
 
         if let selectedColor = selectedColor {
-          run(.group([
-            scaleAction,
-            .colorTransition(from: selectedColor, to: originalColor, duration: animationDuration)
-          ]))
+            run(.group([
+                scaleAction,
+                .colorTransition(from: selectedColor, to: originalColor, duration: animationDuration)
+            ]))
         } else {
-          run(scaleAction)
+            run(scaleAction)
         }
 
         if let selectedFontColor = selectedFontColor {
-          label.run(.colorTransition(from: selectedFontColor, to: originalFontColor, duration: animationDuration))
+            label.run(.colorTransition(from: selectedFontColor, to: originalFontColor, duration: animationDuration))
         }
 
         self.fillTexture = nil
     }
-
+    
     /**
      The animation to execute when the node is removed.
 

@@ -179,6 +179,11 @@ protocol MagneticDelegate: AnyObject {
         let node = children.first(where: {$0.name == nodeName}) as? Node
         node?.animateAlpha(to: alpha)
     }
+
+    func updateScale(nodeName: String, value: CGFloat) {
+        let node = children.first(where: {$0.name == nodeName}) as? Node
+        node?.animateScale(by: value)
+    }
 }
 
 extension Magnetic {

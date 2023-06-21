@@ -70,10 +70,17 @@ class ViewController: UIViewController {
             node.name = aim.name
             magnetic.addChild(node)
             let alphaDistance: Float = 10.0
+            let scalingDistance: Float = 200.0
+
             let aim = aim
+
             let alpha = CGFloat(min(1.0, abs(aim.dayRange.lowerBound - sliderDay) / alphaDistance))
             let roundedAlpha = round(alpha * 10) / 10.0
+
+            let scale = CGFloat(min(1.0, abs(aim.dayRange.lowerBound - sliderDay) / scalingDistance))
+            let limitedScale = max(0.5, scale)
             magnetic.updateAlpha(nodeName: aim.name, alpha: roundedAlpha)
+            magnetic.updateScale(nodeName: aim.name, value: limitedScale)
         }
 
         // Цели которые не в интервале удаляем
@@ -98,7 +105,7 @@ class ViewController: UIViewController {
 
     @IBAction func addSubChild(_ sender: Any) {
         let childNode = ChildNode(radius: 40, preset: HabitPreset.allCases.randomItem())
-        magneticView.magnetic.add(childNode: childNode, to: "Future Aim")
+        magneticView.magnetic.add(childNode: childNode, to: "Today Aim")
     }
 
     @IBAction func reset(_ sender: UIControl?) {

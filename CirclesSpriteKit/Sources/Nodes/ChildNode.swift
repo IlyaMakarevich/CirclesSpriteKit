@@ -47,6 +47,11 @@ import SpriteKit
         run(sequence)
     }
 
+     func animateScale(to value: CGFloat) {
+         let scaleAction = SKAction.scale(by: value, duration: 0.5)
+         run(scaleAction)
+     }
+
     private func regeneratePhysicsBody(withPath path: CGPath) {
         self.physicsBody = {
             var transform = CGAffineTransform.identity.scaledBy(x: marginScale, y: marginScale)
