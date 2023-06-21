@@ -72,10 +72,8 @@ import SpriteKit
     }
 
     public func animateAlpha(to alpha: CGFloat) {
-        let delay = SKAction.wait(forDuration: 2.0)
-        let fade = SKAction.fadeAlpha(to: alpha, duration: 1.0)
-        let sequence = SKAction.sequence([delay, fade])
-        run(sequence)
+        let fade = SKAction.fadeAlpha(to: alpha, duration: 0.4)
+        run(fade)
     }
 
     public lazy var label: SKMultilineLabelNode = { [unowned self] in

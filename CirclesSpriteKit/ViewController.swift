@@ -69,7 +69,15 @@ class ViewController: UIViewController {
             let node = Node(text: aim.name.capitalized, color: color, radius: 50)
             node.name = aim.name
             magnetic.addChild(node)
-            magnetic.updateAlpha(nodeName: aim.name, alpha: 1)
+
+            debugPrint("TEST aim.dayRange.lowerBound = \(aim.dayRange.lowerBound)")
+            debugPrint("TEST sliderDay = \(sliderDay)")
+            let alphaDistance: Float = 10.0
+            let aim = aim
+            let alpha = CGFloat(min(1.0, abs(aim.dayRange.lowerBound - sliderDay) / alphaDistance))
+            let roundedAlpha = round(alpha * 10) / 10.0
+            debugPrint("TEST roundedAlpha = \(roundedAlpha)")
+            magnetic.updateAlpha(nodeName: aim.name, alpha: roundedAlpha)
         }
 
         // Цели которые не в интервале удаляем
