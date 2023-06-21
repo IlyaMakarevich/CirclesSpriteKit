@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SFDisplay-Ultralight.otf">
+            <string>SFUIDisplay-Ultralight</string>
+        </array>
+        <array key="SFText-Regular.otf">
+            <string>SFUIText-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CirclesSpriteKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Habits map" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wsS-Uo-MMz">
+                                <rect key="frame" x="29" y="79" width="335" height="32.666666666666657"/>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Ultralight" family="SF UI Display" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="q8f-P6-SmP">
+                                <rect key="frame" x="0.0" y="798" width="393" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d3b-VX-QED">
+                                        <rect key="frame" x="0.0" y="0.0" width="98.333333333333329" height="44"/>
+                                        <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="15"/>
+                                        <state key="normal" title="Reset"/>
+                                        <connections>
+                                            <action selector="reset:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zwt-2m-mGS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pqo-jn-oxQ" userLabel="Remove Last">
+                                        <rect key="frame" x="98.333333333333343" y="0.0" width="98.333333333333343" height="44"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Remove Last"/>
+                                        <connections>
+                                            <action selector="removeLat:" destination="BYZ-38-t0r" eventType="touchUpInside" id="w2j-Sq-ekE"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SgT-G5-5yv">
+                                        <rect key="frame" x="196.66666666666666" y="0.0" width="97.999999999999972" height="44"/>
+                                        <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="15"/>
+                                        <state key="normal" title="Add"/>
+                                        <connections>
+                                            <action selector="add:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L4a-Hq-twM"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F8u-yV-3IP" userLabel="Add subChild">
+                                        <rect key="frame" x="294.66666666666669" y="0.0" width="98.333333333333314" height="44"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Add subChild"/>
+                                        <connections>
+                                            <action selector="addSubChild:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Z7S-Zc-CdG"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Kbj-xc-JNH"/>
+                                </constraints>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PMN-WN-If5" customClass="MagneticView" customModule="CirclesSpriteKit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="137" width="393" height="661"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="187" minValue="0.0" maxValue="365" translatesAutoresizingMaskIntoConstraints="NO" id="2Og-YT-WcN">
+                                <rect key="frame" x="18" y="742" width="357" height="31"/>
+                                <connections>
+                                    <action selector="sliderChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="agV-9Z-yiv"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOA-RH-9tV">
+                                <rect key="frame" x="176" y="782" width="41.333333333333343" height="20.333333333333371"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mUD-Zj-rB0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="vOA-RH-9tV" firstAttribute="centerX" secondItem="2Og-YT-WcN" secondAttribute="centerX" id="2f5-Qw-caU"/>
+                            <constraint firstItem="q8f-P6-SmP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4ln-sR-c8R"/>
+                            <constraint firstItem="q8f-P6-SmP" firstAttribute="top" secondItem="PMN-WN-If5" secondAttribute="bottom" id="6UN-q7-rgA"/>
+                            <constraint firstItem="PMN-WN-If5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="B7G-eA-wli"/>
+                            <constraint firstItem="wsS-Uo-MMz" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="20" id="CeB-AD-DsM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wsS-Uo-MMz" secondAttribute="trailing" constant="13" id="CfN-vR-O7c"/>
+                            <constraint firstItem="wsS-Uo-MMz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="13" id="Ncq-nS-OpF"/>
+                            <constraint firstItem="mUD-Zj-rB0" firstAttribute="trailing" secondItem="2Og-YT-WcN" secondAttribute="trailing" constant="20" id="S6d-Uf-Ekw"/>
+                            <constraint firstAttribute="bottom" secondItem="q8f-P6-SmP" secondAttribute="bottom" constant="10" id="Tdj-zg-PIP"/>
+                            <constraint firstItem="2Og-YT-WcN" firstAttribute="leading" secondItem="mUD-Zj-rB0" secondAttribute="leading" constant="20" id="Vbs-ma-JFg"/>
+                            <constraint firstAttribute="trailing" secondItem="PMN-WN-If5" secondAttribute="trailing" id="W22-WH-yYy"/>
+                            <constraint firstItem="PMN-WN-If5" firstAttribute="top" secondItem="wsS-Uo-MMz" secondAttribute="bottom" constant="25.333333333333343" id="Zxs-87-xh1"/>
+                            <constraint firstAttribute="trailing" secondItem="q8f-P6-SmP" secondAttribute="trailing" id="gI2-1W-g3q"/>
+                            <constraint firstAttribute="bottom" secondItem="2Og-YT-WcN" secondAttribute="bottom" constant="80" id="l40-7R-Lw5"/>
+                            <constraint firstItem="vOA-RH-9tV" firstAttribute="top" secondItem="2Og-YT-WcN" secondAttribute="bottom" constant="10" id="ytL-Vw-d4w"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="dayLabel" destination="vOA-RH-9tV" id="XId-SE-hGC"/>
+                        <outlet property="magneticView" destination="PMN-WN-If5" id="c9S-SR-gII"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="115.26717557251908" y="-2.1126760563380285"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
