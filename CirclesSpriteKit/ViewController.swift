@@ -35,6 +35,13 @@ class ViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        dataSource.aims.forEach { aim in
+            let color = UIColor.colors.randomItem()
+            let node = Node(text: aim.name.capitalized, color: color, radius: 50)
+            node.name = aim.name
+            magnetic.addChild(node)
+        }
     }
 
 
@@ -64,27 +71,28 @@ class ViewController: UIViewController {
         }
 
         // Добаляем цели и/или обновляем альфу
-        aimsInRange.forEach { aim in
-            let color = UIColor.colors.randomItem()
-            let node = Node(text: aim.name.capitalized, color: color, radius: 50)
-            node.name = aim.name
-            magnetic.addChild(node)
+        aims.forEach { aim in
+//            let color = UIColor.colors.randomItem()
+//            let node = Node(text: aim.name.capitalized, color: color, radius: 50)
+//            node.name = aim.name
+//            magnetic.addChild(node)
 
             debugPrint("TEST aim.dayRange.lowerBound = \(aim.dayRange.lowerBound)")
             debugPrint("TEST sliderDay = \(sliderDay)")
-            let alphaDistance: Float = 10.0
+            let alphaDaysMaxDistance: Float = 10.0
             let aim = aim
-            let alpha = CGFloat(min(1.0, abs(aim.dayRange.lowerBound - sliderDay) / alphaDistance))
+            let daysDelta = sliderDay - aim.dayRange.lowerBound
+            let alpha = min(1.0, daysDelta/alphaDaysMaxDistance) 
             let roundedAlpha = round(alpha * 10) / 10.0
             debugPrint("TEST roundedAlpha = \(roundedAlpha)")
-            magnetic.updateAlpha(nodeName: aim.name, alpha: roundedAlpha)
+            magnetic.updateAlpha(nodeName: aim.name, alpha: CGFloat(roundedAlpha))
         }
 
         // Цели которые не в интервале удаляем
-        aimsNotInRange.forEach { aim in
-            let nodeToRemove = magnetic.children.first {$0.name == aim.name}
-            nodeToRemove?.removeFromParent()
-        }
+//        aimsNotInRange.forEach { aim in
+//            let nodeToRemove = magnetic.children.first {$0.name == aim.name}
+//            nodeToRemove?.removeFromParent()
+//        }
     }
 
 
